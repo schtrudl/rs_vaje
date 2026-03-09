@@ -7,24 +7,16 @@ from gem5.isas import ISA
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
 from gem5.resources.resource import CustomResource
-from cpuInORD_model import RiscV_InOrder_CPU
-
+from cpuO3_model import RISCV_O3_CPU
 
 
 cache_hierarchy = PrivateL1CacheHierarchy(l1d_size="64KiB", l1i_size="64KiB")
+
+
 memory = SingleChannelDDR3_1600("7GiB")
 
-# By default, use Atomic CPU
-#cpu_type = CPUTypes.ATOMIC
-
-
-# Uncomment for Timing CPU
-cpu_type = CPUTypes.TIMING
-
-#processor = SimpleProcessor(cpu_type=cpu_type, num_cores=1, isa=ISA.RISCV)
-
 #Source code for simple processor gem5/src/python/gem5/components/processors/simple_processor.py
-processor = RiscV_InOrder_CPU()
+processor = RISCV_O3_CPU()
 
 
 board = SimpleBoard(
@@ -41,8 +33,8 @@ board = SimpleBoard(
 
 
 
-# Set the workloaad.
-binary = CustomResource("./workload/mat_mult/matrix_mult.bin")
+# Set the workload.
+binary = CustomResource("./workload/bench_speculative/bench_2B.bin")
 board.set_se_binary_workload(binary)
 
 simulator = Simulator(board=board)

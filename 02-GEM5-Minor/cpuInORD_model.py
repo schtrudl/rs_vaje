@@ -35,10 +35,7 @@ from m5.objects.BranchPredictor import (
     MultiperspectivePerceptronTAGE64KB,
     LocalBP
 )
-
-
 from m5.objects.BaseMinorCPU import MinorFUTiming, MinorFU, MinorFUPool
-
 from m5.objects.BaseMinorCPU import minorMakeOpClassSet
 from m5.objects.BaseMinorCPU import MinorDefaultIntFU, MinorDefaultIntMulFU, MinorDefaultIntDivFU, MinorDefaultMemFU
 
@@ -54,7 +51,6 @@ class MinorCustomFloatALU(MinorFU):
             "FloatMisc"
         ]
     )
-
     timings = [MinorFUTiming(description="FloatALUCustom", srcRegsRelativeLats=[2])]
     opLat = 6
 
@@ -87,8 +83,8 @@ class MyCustomFUPool(MinorFUPool):
                 MinorDefaultIntFU(), # default integer ALU
                 MinorDefaultIntMulFU(), # default integer multiplier
                 MinorDefaultIntDivFU(),  # default integer divider
-                MinorCustomFloatALU(), # custom floating-point ALU
-                MinorCustomFloatMult(), # custom floating-point multiplier
+                MinorDefaultIntFU(), # custom floating-point ALU
+                MinorDefaultIntMulFU(), # custom floating-point multiplier
                 MinorCustomFloatDiv(),  # custom floating-point divider
                 MinorDefaultMemFU(), # default memory access FU
             ]
@@ -199,8 +195,8 @@ class InOrdCPUCore(RiscvMinorCPU):
         self.executeFuncUnits.funcUnits[0].opLat = INTEGER_ALU_LATENCY
         self.executeFuncUnits.funcUnits[1].opLat = INTEGER_MUL_LATENCY
         self.executeFuncUnits.funcUnits[2].opLat = INTEGER_DIV_LATENCY
-        self.executeFuncUnits.funcUnits[3].opLat = FLOAT_ALU_LATENCY
-        self.executeFuncUnits.funcUnits[4].opLat = FLOAT_MUL_LATENCY
+        self.executeFuncUnits.funcUnits[3].opLat = INTEGER_ALU_LATENCY
+        self.executeFuncUnits.funcUnits[4].opLat = INTEGER_MUL_LATENCY
         self.executeFuncUnits.funcUnits[5].opLat = FLOAT_DIV_LATENCY
         self.executeFuncUnits.funcUnits[6].opLat = INTEGER_ALU_LATENCY # Memory access latency is the same as integer ALU latency
         #self.executeFuncUnits.funcUnits[0].opLat = INTEGER_ALU_LATENCY
@@ -228,14 +224,14 @@ class InOrdCPUCore(RiscvMinorCPU):
 
         # Pipeline configuration parameters
         # The number of instructions that can be sent to the execute stage per cycle
-        self.executeInputWidth = 1
+        self.executeInputWidth = 4
         # The number of instructions that can be buffered between the issue and execute stages
-        self.executeInputBufferSize = 1 
+        self.executeInputBufferSize = 4
         # The number of instructions that can be buffered between the decode and issue stages
-        self.decodeInputBufferSize = 1
+        self.decodeInputBufferSize = 4
         # Issue limits for instruction dispatch
-        self.executeIssueLimit = 1
-        self.executeMemoryIssueLimit = 1
+        self.executeIssueLimit = 4
+        self.executeMemoryIssueLimit = 2
         
         # Pipeline stage delays
         self.decodeToExecuteForwardDelay = 1
