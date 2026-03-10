@@ -113,8 +113,6 @@ These parameters control how the O3 core handles **memory operations**, includin
 * **Store-set predictor parameters** (`store_set_clear_period`, `LFSTSize`) configure memory dependency prediction.
 * **`needsTSO`** enables strict Total Store Ordering (stronger memory model, typically reduces memory-level parallelism).
 
-If needed, I can also provide a short comparison explaining how changing LQ/SQ sizes affects memory-level parallelism in experiments.
-
 
 #### 8) Commit Stage Configuration
 
