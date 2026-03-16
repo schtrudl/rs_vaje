@@ -24,7 +24,7 @@ int main() {
         return 1;
     }   
     
-    
+
 
     // Initialization
     fillMatrix(mat, N*N, 1); 

@@ -45,3 +45,7 @@ moesi_two_level.py
 bin/
 *_log/
 *.code-worspace
+*.bib
+*.svg
+*.ini
+*.dot
